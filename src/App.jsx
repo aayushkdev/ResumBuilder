@@ -50,7 +50,7 @@ const App = () => {
       <div className="mt-6">
         <button
           onClick={handleDownload}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
+          className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
         >
           Download PDF
         </button>
