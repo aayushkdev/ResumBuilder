@@ -1,143 +1,199 @@
 import React from 'react';
 
-const Form = ({ form, onChange }) => (
-  <div className="w-full max-w-lg mx-auto p-6">
-    <form>
-      <div className="mb-4">
-        <label className="block font-semibold">Name</label>
-        <input
-          type="text"
-          name="name"
-          value={form.name}
-          onChange={onChange}
-          className="w-full p-2 border rounded"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block font-semibold">Email</label>
-        <input
-          type="email"
-          name="email"
-          value={form.email}
-          onChange={onChange}
-          className="w-full p-2 border rounded"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block font-semibold">Phone</label>
-        <input
-          type="text"
-          name="phone"
-          value={form.phone}
-          onChange={onChange}
-          className="w-full p-2 border rounded"
-          required
-        />
-      </div>
+const Form = ({ form, setForm }) => {
+  const handleAddEntry = (type) => {
+    const newEntry = { title: '', place: '', date: '', details: '' };
+    setForm((prev) => ({
+      ...prev,
+      [type]: [...prev[type], newEntry],
+    }));
+  };
 
-      <div className="mb-4">
-        <label className="block font-semibold">Education Title</label>
-        <input
-          type="text"
-          name="educationTitle"
-          value={form.educationTitle}
-          onChange={onChange}
-          className="w-full p-2 border rounded"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block font-semibold">Education Place</label>
-        <input
-          type="text"
-          name="educationPlace"
-          value={form.educationPlace}
-          onChange={onChange}
-          className="w-full p-2 border rounded"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block font-semibold">Education Date</label>
-        <input
-          type="text"
-          name="educationDate"
-          value={form.educationDate}
-          onChange={onChange}
-          className="w-full p-2 border rounded"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block font-semibold">Education Details</label>
-        <textarea
-          name="education"
-          value={form.education}
-          onChange={onChange}
-          className="w-full p-2 border rounded"
-        />
-      </div>
+  const handleRemoveEntry = (type, index) => {
+    setForm((prev) => {
+      const updatedEntries = [...prev[type]];
+      updatedEntries.splice(index, 1);
+      return { ...prev, [type]: updatedEntries };
+    });
+  };
 
-      <div className="mb-4">
-        <label className="block font-semibold">Experience Title</label>
-        <input
-          type="text"
-          name="experienceTitle"
-          value={form.experienceTitle}
-          onChange={onChange}
-          className="w-full p-2 border rounded"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block font-semibold">Experience Place</label>
-        <input
-          type="text"
-          name="experiencePlace"
-          value={form.experiencePlace}
-          onChange={onChange}
-          className="w-full p-2 border rounded"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block font-semibold">Experience Date</label>
-        <input
-          type="text"
-          name="experienceDate"
-          value={form.experienceDate}
-          onChange={onChange}
-          className="w-full p-2 border rounded"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block font-semibold">Experience Details</label>
-        <textarea
-          name="experience"
-          value={form.experience}
-          onChange={onChange}
-          className="w-full p-2 border rounded"
-        />
-      </div>
+  const handleChange = (e, type, index) => {
+    const { name, value } = e.target;
+    const updatedEntries = [...form[type]];
+    updatedEntries[index] = { ...updatedEntries[index], [name]: value };
+    setForm((prev) => ({ ...prev, [type]: updatedEntries }));
+  };
 
-      <div className="mb-4">
-        <label className="block font-semibold">Projects</label>
-        <textarea
-          name="projects"
-          value={form.projects}
-          onChange={onChange}
-          className="w-full p-2 border rounded"
-        />
-      </div>
+  return (
+    <div className="w-full max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+      <form className="space-y-6">
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-700">Education</h2>
+          {form.education.map((entry, index) => (
+            <div key={index} className="bg-gray-50 p-4 rounded-lg shadow-sm mb-4">
+              <input
+                type="text"
+                name="title"
+                value={entry.title}
+                onChange={(e) => handleChange(e, 'education', index)}
+                className="w-full p-3 border rounded-md mb-2 focus:ring-2 focus:ring-blue-500"
+                placeholder="Educational Institution's name"
+              />
+              <input
+                type="text"
+                name="place"
+                value={entry.place}
+                onChange={(e) => handleChange(e, 'education', index)}
+                className="w-full p-3 border rounded-md mb-2 focus:ring-2 focus:ring-blue-500"
+                placeholder="Place"
+              />
+              <input
+                type="text"
+                name="date"
+                value={entry.date}
+                onChange={(e) => handleChange(e, 'education', index)}
+                className="w-full p-3 border rounded-md mb-2 focus:ring-2 focus:ring-blue-500"
+                placeholder="Year/Date"
+              />
+              <textarea
+                name="details"
+                value={entry.details}
+                onChange={(e) => handleChange(e, 'education', index)}
+                className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-blue-500"
+                placeholder="Degree"
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveEntry('education', index)}
+                className="text-red-500 hover:text-red-700"
+              >
+                - Remove Education
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => handleAddEntry('education')}
+            className="mt-2 text-blue-500 hover:text-blue-700"
+          >
+            + Add Education
+          </button>
+        </div>
 
-      <div className="mb-4">
-        <label className="block font-semibold">Skills</label>
-        <textarea
-          name="skills"
-          value={form.skills}
-          onChange={onChange}
-          className="w-full p-2 border rounded"
-        />
-      </div>
-    </form>
-  </div>
-);
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-700">Experience</h2>
+          {form.experience.map((entry, index) => (
+            <div key={index} className="bg-gray-50 p-4 rounded-lg shadow-sm mb-4">
+              <input
+                type="text"
+                name="title"
+                value={entry.title}
+                onChange={(e) => handleChange(e, 'experience', index)}
+                className="w-full p-3 border rounded-md mb-2 focus:ring-2 focus:ring-blue-500"
+                placeholder="Job Title"
+              />
+              <input
+                type="text"
+                name="company"
+                value={entry.company}
+                onChange={(e) => handleChange(e, 'experience', index)}
+                className="w-full p-3 border rounded-md mb-2 focus:ring-2 focus:ring-blue-500"
+                placeholder="Company"
+              />
+              <input
+                type="text"
+                name="place"
+                value={entry.place}
+                onChange={(e) => handleChange(e, 'experience', index)}
+                className="w-full p-3 border rounded-md mb-2 focus:ring-2 focus:ring-blue-500"
+                placeholder="Place"
+              />
+              <input
+                type="text"
+                name="date"
+                value={entry.date}
+                onChange={(e) => handleChange(e, 'experience', index)}
+                className="w-full p-3 border rounded-md mb-2 focus:ring-2 focus:ring-blue-500"
+                placeholder="Year/Date"
+              />
+              <textarea
+                name="details"
+                value={entry.details}
+                onChange={(e) => handleChange(e, 'experience', index)}
+                className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-blue-500"
+                placeholder="Responsibilities"
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveEntry('experience', index)}
+                className="text-red-500 hover:text-red-700"
+              >
+                - Remove Experience
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => handleAddEntry('experience')}
+            className="mt-2 text-blue-500 hover:text-blue-700"
+          >
+            + Add Experience
+          </button>
+        </div>
+
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-700">Projects</h2>
+          {form.projects.map((project, index) => (
+            <div key={index} className="bg-gray-50 p-4 rounded-lg shadow-sm mb-4">
+              <textarea
+                name="project"
+                value={project}
+                onChange={(e) => {
+                  const updatedProjects = [...form.projects];
+                  updatedProjects[index] = e.target.value;
+                  setForm((prev) => ({ ...prev, projects: updatedProjects }));
+                }}
+                className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-blue-500"
+                placeholder="Project Description"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const updatedProjects = [...form.projects];
+                  updatedProjects.splice(index, 1);
+                  setForm((prev) => ({ ...prev, projects: updatedProjects }));
+                }}
+                className="text-red-500 hover:text-red-700"
+              >
+                - Remove Project
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => {
+              const updatedProjects = [...form.projects, ''];
+              setForm((prev) => ({ ...prev, projects: updatedProjects }));
+            }}
+            className="mt-2 text-blue-500 hover:text-blue-700"
+          >
+            + Add Project
+          </button>
+        </div>
+
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-700">Skills</h2>
+          <textarea
+            name="skills"
+            value={form.skills}
+            onChange={(e) => handleChange(e, 'skills')}
+            className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-blue-500"
+            placeholder="Skills"
+          />
+        </div>
+      </form>
+    </div>
+  );
+};
 
 export default Form;

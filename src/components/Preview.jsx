@@ -3,8 +3,8 @@ import React from 'react';
 const Preview = ({ form, resumeRef }) => (
   <div
     ref={resumeRef}
-    className="bg-white text-black font-serif p-12 shadow w-full max-w-3xl mx-auto"
-    style={{ width: '210mm', minHeight: '297mm', boxSizing: 'border-box' }}
+    className="bg-white text-black font-serif p-8 shadow w-full max-w-3xl mx-auto overflow-auto"
+    style={{ width: '100%', maxWidth: '210mm', minHeight: '297mm', boxSizing: 'border-box' }}
   >
     <div className="text-center mb-6">
       <h1 className="text-2xl font-bold">{form.name}</h1>
@@ -12,25 +12,36 @@ const Preview = ({ form, resumeRef }) => (
     </div>
 
     <Section title="Education">
-      <EduOrExpBlock
-        title={form.educationTitle}
-        place={form.educationPlace}
-        date={form.educationDate}
-        content={form.education}
-      />
+      {form.education.map((edu, idx) => (
+        <EduBlock
+          key={idx}
+          title={edu.title}
+          place={edu.place}
+          date={edu.date}
+          content={edu.details}
+        />
+      ))}
     </Section>
 
     <Section title="Experience">
-      <EduOrExpBlock
-        title={form.experienceTitle}
-        place={form.experiencePlace}
-        date={form.experienceDate}
-        content={form.experience}
-      />
+      {form.experience.map((exp, idx) => (
+        <ExpBlock
+          key={idx}
+          title={exp.title}
+          company={exp.company}
+          place={exp.place}
+          date={exp.date}
+          content={exp.details}
+        />
+      ))}
     </Section>
 
     <Section title="Projects">
-      <BulletList text={form.projects} />
+      <ul className="list-disc ml-6 text-sm">
+        {form.projects.map((proj, idx) => (
+          <li key={idx}>{proj}</li>
+        ))}
+      </ul>
     </Section>
 
     <Section title="Skills">
@@ -46,15 +57,36 @@ const Section = ({ title, children }) => (
   </div>
 );
 
-const EduOrExpBlock = ({ title, place, date, content }) => (
-  <div className="mb-2">
-    <div className="flex justify-between text-sm font-semibold">
-      <span>{title} — {place}</span>
-      <span>{date}</span>
+const ExpBlock = ({ title, place, company, date, content }) => (
+  <div className="mb-4 flex justify-between text-sm gap-4">
+    <div className="w-2/3 flex flex-col justify-start">
+      <div className="font-semibold">{company}</div>
+      <div className="italic text-gray-700 mb-1">{title}</div>
+      <BulletList text={content} />
     </div>
-    <BulletList text={content} />
+
+    <div className="w-1/3 flex flex-col items-end text-right justify-start">
+      <div className="font-semibold">{date}</div>
+      <div className="italic text-gray-600">{place}</div>
+    </div>
   </div>
 );
+
+
+const EduBlock = ({ title, place, date, content }) => (
+  <div className="mb-4 flex justify-between text-sm">
+    <div className="w-2/3">
+      <div className="font-semibold">{title}</div>
+      <div className="text-gray-600 italic mt-auto">{content}</div>
+    </div>
+
+    <div className="w-1/3 flex flex-col items-end text-right">
+      <div className="font-semibold">{date}</div>
+      <div className="text-gray-600 italic mt-auto">{place}</div>
+    </div>
+  </div>
+);
+
 
 const BulletList = ({ text }) => {
   if (!text) return null;

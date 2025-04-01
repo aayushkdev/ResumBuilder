@@ -9,33 +9,24 @@ const App = () => {
     name: '',
     email: '',
     phone: '',
-    educationTitle: '',
-    educationPlace: '',
-    educationDate: '',
-    education: '',
-    experienceTitle: '',
-    experiencePlace: '',
-    experienceDate: '',
-    experience: '',
-    projects: '',
+    education: [{ title: '', place: '', date: '', details: '' }],
+    experience: [{ title: '', company:'', place: '', date: '', details: '' }],
+    projects: [''],
     skills: '',
   });
 
   const resumeRef = useRef();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
   const handleDownload = async () => {
     const element = resumeRef.current;
     if (!element) return;
 
-    const canvas = await html2canvas(element);
+    const canvas = await html2canvas(element, {
+      scale: 2,
+    });
     const imgData = canvas.toDataURL('image/png');
 
-    const pdf = new jsPDF();
+    const pdf = new jsPDF('p', 'mm', 'a4');
     const width = pdf.internal.pageSize.getWidth();
     const height = (canvas.height * width) / canvas.width;
 
@@ -44,16 +35,18 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex flex-col md:flex-row gap-8">
-      <Form form={form} onChange={handleChange} onFormSubmit={() => {}} />
-      <Preview form={form} resumeRef={resumeRef} />
-      <div className="mt-6">
+    <div className="min-h-screen bg-gray-100 p-6 md:flex md:gap-8">
+      <div className="md:w-1/2">
+        <Form form={form} setForm={setForm} />
         <button
           onClick={handleDownload}
-          className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
+          className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition-all duration-300"
         >
           Download PDF
         </button>
+      </div>
+      <div className="md:w-1/2 bg-white p-6 rounded-lg shadow-lg">
+        <Preview form={form} resumeRef={resumeRef} />
       </div>
     </div>
   );
