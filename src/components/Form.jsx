@@ -24,9 +24,64 @@ const Form = ({ form, setForm }) => {
     setForm((prev) => ({ ...prev, [type]: updatedEntries }));
   };
 
+  const handleSkillChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      skills: {
+        ...prev.skills,
+        [name]: value,
+      },
+    }));
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
       <form className="space-y-6">
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-gray-700">Personal Information</h2>
+          <input
+            type="text"
+            name="name"
+            value={form.name}
+            onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
+            className="w-full p-3 border rounded-md mb-3 focus:ring-2 focus:ring-blue-500"
+            placeholder="Full Name"
+          />
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
+            className="w-full p-3 border rounded-md mb-3 focus:ring-2 focus:ring-blue-500"
+            placeholder="Email Address"
+          />
+          <input
+            type="tel"
+            name="phone"
+            value={form.phone}
+            onChange={(e) => setForm((prev) => ({ ...prev, phone: e.target.value }))}
+            className="w-full p-3 border rounded-md mb-3 focus:ring-2 focus:ring-blue-500"
+            placeholder="Phone Number"
+          />
+          <input
+            type="text"
+            name="linkedin"
+            value={form.linkedin}
+            onChange={(e) => setForm((prev) => ({ ...prev, linkedin: e.target.value }))}
+            className="w-full p-3 border rounded-md mb-3 focus:ring-2 focus:ring-blue-500"
+            placeholder="Linkedin Link"
+          />
+          <input
+            type="text"
+            name="github"
+            value={form.github}
+            onChange={(e) => setForm((prev) => ({ ...prev, github: e.target.value }))}
+            className="w-full p-3 border rounded-md mb-3 focus:ring-2 focus:ring-blue-500"
+            placeholder="Github Link"
+          />
+        </div>
+
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-700">Education</h2>
           {form.education.map((entry, index) => (
@@ -182,13 +237,30 @@ const Form = ({ form, setForm }) => {
         </div>
 
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-700">Skills</h2>
-          <textarea
-            name="skills"
-            value={form.skills}
-            onChange={(e) => handleChange(e, 'skills')}
-            className="w-full p-3 border rounded-md mb-4 focus:ring-2 focus:ring-blue-500"
-            placeholder="Skills"
+          <h2 className="text-xl font-semibold text-gray-700">Technical Skills</h2>
+          <input
+            type="text"
+            name="languages"
+            value={form.skills.languages}
+            onChange={handleSkillChange}
+            className="w-full p-3 border rounded-md mb-3 focus:ring-2 focus:ring-blue-500"
+            placeholder="Languages (e.g. Python, JavaScript, C++)"
+          />
+          <input
+            type="text"
+            name="frameworks"
+            value={form.skills.frameworks}
+            onChange={handleSkillChange}
+            className="w-full p-3 border rounded-md mb-3 focus:ring-2 focus:ring-blue-500"
+            placeholder="Frameworks & Libraries (e.g. React, Django)"
+          />
+          <input
+            type="text"
+            name="technologies"
+            value={form.skills.technologies}
+            onChange={handleSkillChange}
+            className="w-full p-3 border rounded-md mb-3 focus:ring-2 focus:ring-blue-500"
+            placeholder="Technologies (e.g. Docker, Git, PostgreSQL)"
           />
         </div>
       </form>

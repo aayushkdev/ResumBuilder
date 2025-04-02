@@ -9,10 +9,12 @@ const App = () => {
     name: '',
     email: '',
     phone: '',
+    linkedin: '',
+    github: '',
     education: [{ title: '', place: '', date: '', details: '' }],
     experience: [{ title: '', company:'', place: '', date: '', details: '' }],
     projects: [''],
-    skills: '',
+    skills: {languages: '', frameworks: '', technologies: ''},
   });
 
   const resumeRef = useRef();

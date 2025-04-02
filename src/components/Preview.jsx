@@ -6,47 +6,77 @@ const Preview = ({ form, resumeRef }) => (
     className="bg-white text-black font-serif p-8 shadow w-full max-w-3xl mx-auto overflow-auto"
     style={{ width: '100%', maxWidth: '210mm', minHeight: '297mm', boxSizing: 'border-box' }}
   >
-    <div className="text-center mb-6">
-      <h1 className="text-2xl font-bold">{form.name}</h1>
-      <p className="text-sm mt-1">{form.email} | {form.phone}</p>
-    </div>
+    
+  <div className="text-center mb-6">
+    <h1 className="text-2xl font-bold">{form.name}</h1>
+    <p className="text-sm mt-1">
+      {[form.email, form.phone, form.linkedin, form.github]
+        .filter(Boolean)
+        .join(' | ')}
+    </p>
+  </div>
 
-    <Section title="Education">
-      {form.education.map((edu, idx) => (
-        <EduBlock
-          key={idx}
-          title={edu.title}
-          place={edu.place}
-          date={edu.date}
-          content={edu.details}
-        />
-      ))}
-    </Section>
-
-    <Section title="Experience">
-      {form.experience.map((exp, idx) => (
-        <ExpBlock
-          key={idx}
-          title={exp.title}
-          company={exp.company}
-          place={exp.place}
-          date={exp.date}
-          content={exp.details}
-        />
-      ))}
-    </Section>
-
-    <Section title="Projects">
-      <ul className="list-disc ml-6 text-sm">
-        {form.projects.map((proj, idx) => (
-          <li key={idx}>{proj}</li>
+    {form.education?.length > 0 && (
+      <Section title="Education">
+        {form.education.map((edu, idx) => (
+          <EduBlock
+            key={idx}
+            title={edu.title}
+            place={edu.place}
+            date={edu.date}
+            content={edu.details}
+          />
         ))}
-      </ul>
-    </Section>
+      </Section>
+    )}
 
-    <Section title="Skills">
-      <p className="text-sm whitespace-pre-line">{form.skills}</p>
-    </Section>
+    {form.experience?.length > 0 && (
+      <Section title="Experience">
+        {form.experience.map((exp, idx) => (
+          <ExpBlock
+            key={idx}
+            title={exp.title}
+            company={exp.company}
+            place={exp.place}
+            date={exp.date}
+            content={exp.details}
+          />
+        ))}
+      </Section>
+    )}
+
+    {form.projects?.length > 0 && (
+      <Section title="Projects">
+        <ul className="list-disc ml-6 text-sm">
+          {form.projects.map((proj, idx) => (
+            <li key={idx}>{proj}</li>
+          ))}
+        </ul>
+      </Section>
+    )}
+
+    {form.skills && (
+      <Section title="Technical Skills">
+        <ul className="text-sm list-none space-y-1">
+          {form.skills.languages && (
+            <li>
+              <strong>Languages:</strong> {form.skills.languages}
+            </li>
+          )}
+          {form.skills.frameworks && (
+            <li>
+              <strong>Frameworks & Libraries:</strong> {form.skills.frameworks}
+            </li>
+          )}
+          {form.skills.technologies && (
+            <li>
+              <strong>Technologies:</strong> {form.skills.technologies}
+            </li>
+          )}
+        </ul>
+      </Section>
+    )}
+
   </div>
 );
 
